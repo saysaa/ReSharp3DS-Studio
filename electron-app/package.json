@@ -1,0 +1,103 @@
+{
+  "private": true,
+  "name": "resharp3ds-studio-electron",
+  "version": "0.0.0",
+  "main": "lib/backend/electron-main.js",
+  "dependencies": {
+    "@theia/core": "1.72.3",
+    "@theia/editor": "1.72.3",
+    "@theia/electron": "1.72.3",
+    "@theia/filesystem": "1.72.3",
+    "@theia/markers": "1.72.3",
+    "@theia/messages": "1.72.3",
+    "@theia/monaco": "1.72.3",
+    "@theia/navigator": "1.72.3",
+    "@theia/preferences": "1.72.3",
+    "@theia/process": "1.72.3",
+    "@theia/terminal": "1.72.3",
+    "@theia/workspace": "1.72.3",
+    "resharp3ds-studio": "0.0.0"
+  },
+  "devDependencies": {
+    "@theia/cli": "1.72.3",
+    "electron": "39.8.7"
+  },
+  "scripts": {
+    "bundle": "npm run rebuild && theia build --mode development",
+    "rebuild": "theia rebuild:electron --cacheRoot ..",
+    "start": "theia start",
+    "watch": "npm run rebuild && theia build --watch --mode development"
+  },
+  "theia": {
+    "target": "electron",
+    "frontend": {
+      "config": {
+        "applicationName": "ReSharp3DS Studio",
+        "defaultTheme": "dark"
+      }
+    },
+    "electron": {
+      "windowOptions": {
+        "title": "ReSharp3DS Studio",
+        "icon": "resources/resharp3ds.png"
+      }
+    }
+  },
+  "productName": "ReSharp3DS Studio",
+  "build": {
+    "appId": "dev.saysaa.resharp3ds.studio",
+    "productName": "ReSharp3DS Studio",
+    "asar": false,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "package.json",
+      "lib/**/*",
+      "src-gen/**/*",
+      "resources/**/*",
+      "node_modules/**/*",
+      "!**/*.map"
+    ],
+    "extraResources": [
+      {
+        "from": "../resharp3ds-studio/compiler",
+        "to": "resharp3ds-studio/compiler"
+      }
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development",
+      "executableName": "resharp3ds-studio",
+      "icon": "resources/icons/linux",
+      "synopsis": "ReSharp3DS Studio",
+      "description": "Dedicated IDE for building ReSharp3DS C# homebrew applications.",
+      "maintainer": "Saysaa <no-reply@resharp.com>",
+      "vendor": "Saysaa"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "resources/icons/windows/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ReSharp3DS Studio"
+    }
+  },
+  "description": "IDE for ReSharp3DS development",
+  "homepage": "https://github.com/saysaa/ReSharp3DS-Studio",
+  "author": {
+    "name": "Saysaa",
+    "email": "no-reply@resharp.com"
+  }
+}

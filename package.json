@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+  "scripts": {
+    "build:browser": "npm --prefix browser-app run bundle",
+    "build:electron": "npm --prefix electron-app run bundle",
+    "prepare": "lerna run prepare",
+    "postinstall": "theia check:theia-version",
+    "start:browser": "npm --prefix browser-app start",
+    "start:electron": "npm --prefix electron-app start",
+    "watch:browser": "lerna run --parallel watch --ignore electron-app",
+    "watch:electron": "lerna run --parallel watch --ignore browser-app",
+    "dist:dir": "yarn build:electron && electron-builder --projectDir electron-app --dir",
+    "dist:linux": "yarn build:electron && electron-builder --projectDir electron-app --linux --x64",
+    "dist:win": "yarn build:electron && electron-builder --projectDir electron-app --win --x64"
+  },
+  "devDependencies": {
+    "electron-builder": "26.0.12",
+    "lerna": "2.4.0"
+  },
+  "workspaces": [
+    "resharp3ds-studio",
+    "browser-app",
+    "electron-app"
+  ]
+}

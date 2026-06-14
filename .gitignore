@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# npm/yarn noise
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Theia / TypeScript build output
+**/lib/
+**/src-gen/
+**/.cache/
+**/.theia/
+**/.vscode-test/
+
+# Electron builder output
+electron-app/dist/
+electron-app/out/
+dist/
+out/
+
+# Packaged apps
+*.AppImage
+*.deb
+*.rpm
+*.snap
+*.exe
+*.msi
+*.dmg
+*.zip
+
+# .NET build output
+**/bin/
+**/obj/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Theia browser native modules cache
+.browser_modules/
+**/.browser_modules/
+
+# Local editor settings
+.vscode/

@@ -1,0 +1,34 @@
+{
+  "name": "resharp3ds-studio",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.0.0",
+  "files": [
+    "lib",
+    "src",
+    "compiler"
+  ],
+  "dependencies": {
+    "@theia/core": "1.72.3",
+    "@theia/workspace": "1.72.3",
+    "@theia/monaco": "1.72.3",
+    "@theia/monaco-editor-core": "1.108.201"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.0",
+    "typescript": "~5.4.5"
+  },
+  "scripts": {
+    "prepare": "npm run clean && npm run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/resharp3ds-studio-frontend-module",
+      "backend": "lib/node/resharp3ds-studio-backend-module"
+    }
+  ]
+}

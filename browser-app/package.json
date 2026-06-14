@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "name": "browser-app",
+  "version": "0.0.0",
+  "dependencies": {
+    "@theia/core": "1.72.3",
+    "@theia/editor": "1.72.3",
+    "@theia/filesystem": "1.72.3",
+    "@theia/markers": "1.72.3",
+    "@theia/messages": "1.72.3",
+    "@theia/monaco": "1.72.3",
+    "@theia/navigator": "1.72.3",
+    "@theia/preferences": "1.72.3",
+    "@theia/process": "1.72.3",
+    "@theia/terminal": "1.72.3",
+    "@theia/workspace": "1.72.3",
+    "resharp3ds-studio": "0.0.0"
+  },
+  "devDependencies": {
+    "@theia/cli": "1.72.3"
+  },
+  "scripts": {
+    "bundle": "npm run rebuild && theia build --mode development",
+    "rebuild": "theia rebuild:browser --cacheRoot ..",
+    "start": "theia start",
+    "watch": "npm run rebuild && theia build --watch --mode development"
+  },
+  "theia": {
+    "target": "browser",
+    "frontend": {
+      "config": {
+        "applicationName": "ReSharp3DS Studio",
+        "defaultTheme": "dark"
+      }
+    }
+  },
+  "productName": "ReSharp3DS Studio"
+}
