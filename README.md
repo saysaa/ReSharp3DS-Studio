@@ -1,79 +1,366 @@
 # ReSharp3DS Studio
 
-## Getting started
+**ReSharp3DS Studio** is a dedicated desktop IDE for building C# applications for the **ReSharp3DS Nintendo 3DS runtime**.
 
-Please install all necessary [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites).
+It is built with **Theia + Electron** and provides a focused workflow:
 
-## Running the browser example
+```txt
+Open project folder
+Run ReSharp3DS: Build PE
+Get dist/<ProjectName>.pe
+Copy the .pe file to the 3DS SD card
+```
 
-    npm run build:browser
-    npm run start:browser
+ReSharp3DS Studio is not a generic VS Code extension. It is a standalone desktop application focused on ReSharp3DS development.
 
-*or:*
+---
 
-    npm run build:browser
-    cd browser-app
-    npm start
+## Links
 
-*or:* launch `Start Browser Backend` configuration from VS code.
+- [ReSharp3DS Runtime](https://github.com/saysaa/ReSharp3DS)
+- [ReSharp3DS Documentation](https://github.com/saysaa/ReSharp3DS/tree/docs)
+- [ReSharp3DS SDK](https://github.com/saysaa/ReSharp3DS/tree/sdk)
 
-Open http://localhost:3000 in the browser.
+---
 
-## Running the Electron example
+## What is ReSharp3DS?
 
-    npm run build:electron
-    npm run start:electron
+ReSharp3DS is an experimental Nintendo 3DS homebrew runtime that runs managed C# code using nanoCLR / .NET nanoFramework.
 
-*or:*
+The native 3DS runtime loads `.pe` applications from the SD card and exposes 3DS features to C# through the `ReSharp3DS.cs` SDK API.
 
-    npm run build:electron
-    cd electron-app
-    npm start
+ReSharp3DS Studio is the desktop tool used to write and build those C# applications.
 
-*or:* launch `Start Electron Backend` configuration from VS code.
+---
 
+## Features
 
-## Developing with the browser example
+```txt
+Dedicated ReSharp3DS IDE
+Theia / Electron desktop app
+C# syntax highlighting
+Build PE command
+Automatic ReSharp3DS.cs SDK download before build
+GitHub update check
+Linux and Windows packaging support
+```
 
-Start watching all packages, including `browser-app`, of your application with
+Current IDE commands:
 
-    npm run watch:browser
+```txt
+ReSharp3DS: Build PE
+ReSharp3DS: Check for Updates
+```
 
-*or* watch only specific packages with
+---
 
-    cd resharp3ds-studio
-    npm run watch
+## Build workflow
 
-and the browser example.
+A ReSharp3DS Studio project is a normal folder containing your C# source files.
 
-    cd browser-app
-    npm run watch
+Minimal project:
 
-Run the example as [described above](#Running-the-browser-example)
-## Developing with the Electron example
+```txt
+MyApp/
+  Program.cs
+```
 
-Start watching all packages, including `electron-app`, of your application with
+When you run:
 
-    npm run watch:electron
+```txt
+ReSharp3DS: Build PE
+```
 
-*or* watch only specific packages with
+the IDE will:
 
-    cd resharp3ds-studio
-    npm run watch
+```txt
+1. Download the latest ReSharp3DS.cs SDK file
+2. Place it in the opened project folder
+3. Compile the C# project using nanoFramework.CoreLibrary 1.9.0-preview.11
+4. Run nanoFramework MetadataProcessor
+5. Generate dist/<ProjectName>.pe
+```
 
-and the Electron example.
+Example output:
 
-    cd electron-app
-    npm run watch
+```txt
+MyApp/
+  Program.cs
+  ReSharp3DS.cs
+  dist/
+    MyApp.pe
+```
 
-Run the example as [described above](#Running-the-Electron-example)
+---
 
-## Publishing resharp3ds-studio
+## nanoFramework version
 
-Create a npm user and login to the npm registry, [more on npm publishing](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+ReSharp3DS Studio currently targets:
 
-    npm login
+```txt
+nanoFramework.CoreLibrary 1.9.0-preview.11
+MetadataProcessor CLI 3.0.100
+```
 
-Publish packages with lerna to update versions properly across local packages, [more on publishing with lerna](https://github.com/lerna/lerna#publish).
+The generated `.pe` must match the `mscorlib.pe` used by the ReSharp3DS runtime.
 
-    npx lerna publish
+Do not update nanoFramework packages randomly unless the runtime `mscorlib.pe` is updated too.
+
+A version mismatch can cause runtime errors such as:
+
+```txt
+ResolveAll errors
+PrepareForExecution errors
+missing methods
+native calls not working
+runtime crashes
+```
+
+---
+
+## Requirements
+
+To build and run ReSharp3DS Studio from source:
+
+```txt
+Node.js 18+
+Yarn 1.x
+Git
+.NET SDK
+```
+
+On Linux, building ReSharp3DS `.pe` applications also requires:
+
+```txt
+Mono
+```
+
+Example Linux setup:
+
+```bash
+sudo apt update
+sudo apt install git nodejs npm mono-complete
+npm install --global yarn
+```
+
+Check your tools:
+
+```bash
+node --version
+yarn --version
+dotnet --info
+mono --version
+```
+
+---
+
+## Running from source
+
+```bash
+git clone https://github.com/saysaa/ReSharp3DS-Studio.git
+cd ReSharp3DS-Studio
+yarn install
+yarn build:electron
+yarn start:electron
+```
+
+---
+
+## Development commands
+
+Start the browser version:
+
+```bash
+yarn build:browser
+yarn start:browser
+```
+
+Start the Electron desktop version:
+
+```bash
+yarn build:electron
+yarn start:electron
+```
+
+Rebuild the internal ReSharp3DS Studio module:
+
+```bash
+cd resharp3ds-studio
+npm run clean
+npm run build
+cd ..
+```
+
+Run the internal compiler directly:
+
+```bash
+dotnet run --project resharp3ds-studio/compiler/ReSharp3DS.Compiler -- \
+  --project ~/Desktop/TestApp \
+  --output TestApp.pe
+```
+
+---
+
+## Packaging
+
+Directory build:
+
+```bash
+yarn dist:dir
+```
+
+Linux packages:
+
+```bash
+yarn dist:linux
+```
+
+Windows packages:
+
+```bash
+yarn dist:win
+```
+
+Packaging output is written to:
+
+```txt
+electron-app/dist/
+```
+
+---
+
+## Creating a ReSharp3DS app
+
+Create a folder and add `Program.cs`:
+
+```csharp
+using ReSharp3DS;
+using Console = ReSharp3DS.Console;
+
+public class Program
+{
+    static bool initialized = false;
+
+    public static void Main()
+    {
+        if (!initialized)
+        {
+            initialized = true;
+
+            Console.Clear();
+            Console.WriteLine("Hello ReSharp3DS Studio!");
+        }
+
+        Runtime.Yield();
+    }
+}
+```
+
+Open the folder in ReSharp3DS Studio and run:
+
+```txt
+ReSharp3DS: Build PE
+```
+
+The IDE will generate:
+
+```txt
+dist/<ProjectName>.pe
+```
+
+---
+
+## Running on Nintendo 3DS
+
+Copy the generated `.pe` file to the SD card.
+
+Recommended runtime layout:
+
+```txt
+sdmc:/3ds/ReSharp3DS.3dsx
+sdmc:/ReSharp3DS/bin/mscorlib.pe
+sdmc:/ReSharp3DS/MyApp/MyApp.pe
+```
+
+The ReSharp3DS runtime launcher scans:
+
+```txt
+sdmc:/ReSharp3DS/
+```
+
+It can display folders and launch `.pe` files from subfolders.
+
+---
+
+## ReSharp3DS API
+
+The SDK API is provided by `ReSharp3DS.cs`.
+
+ReSharp3DS Studio downloads this file automatically before building a project.
+
+Available API areas include:
+
+```txt
+Console API
+Input API
+Runtime API
+Time API
+Random API
+Touch API
+CirclePad API
+Screen constants
+App API
+SystemInfo API
+Graphics API
+Audio API
+File API
+Directory API
+Save API
+```
+
+---
+
+## Runtime execution model
+
+ReSharp3DS uses a tick-based runtime model.
+
+`Program.Main()` can be called repeatedly while the application is running.
+
+Use static fields to keep state and avoid clearing the screen every tick.
+
+---
+
+## Update system
+
+ReSharp3DS Studio includes a GitHub update check command:
+
+```txt
+ReSharp3DS: Check for Updates
+```
+
+It checks the latest GitHub release and compares it with the local app version.
+
+Future versions may support automatic download, install, and restart.
+
+---
+
+## Documentation
+
+More documentation is available in:
+
+```txt
+docs/BUILDING.md
+docs/PACKAGING.md
+docs/RELEASES.md
+docs/UPDATE_SYSTEM.md
+docs/TROUBLESHOOTING.md
+docs/PROJECT_STRUCTURE.md
+```
+
+---
+
+## Notes
+
+ReSharp3DS Studio is experimental.
+
+The project is still evolving, and APIs may change before a stable release.
