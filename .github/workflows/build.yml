@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -31,7 +31,7 @@ jobs:
           sudo apt install -y mono-complete
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build Linux package
         run: yarn dist:linux
@@ -53,7 +53,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -61,7 +61,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build Windows setup
         run: yarn dist:win
