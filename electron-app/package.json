@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "resharp3ds-studio-electron",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "lib/backend/electron-main.js",
   "dependencies": {
     "@theia/core": "1.72.3",
@@ -67,23 +67,28 @@
     ],
     "linux": {
       "target": [
-        "AppImage",
         "deb"
       ],
       "category": "Development",
       "executableName": "resharp3ds-studio",
       "icon": "resources/icons/linux",
       "synopsis": "ReSharp3DS Studio",
-      "description": "Dedicated IDE for building ReSharp3DS C# homebrew applications.",
-      "maintainer": "Saysaa <no-reply@resharp.com>",
-      "vendor": "Saysaa"
+      "description": "IDE for ReSharp3DS development",
+      "maintainer": "Saysaa <noreply@resharp3ds.local>",
+      "vendor": "Saysaa",
+      "artifactName": "ReSharp3DS-Studio-linux-x64.${ext}"
     },
     "win": {
       "target": [
-        "nsis",
-        "portable"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
-      "icon": "resources/icons/windows/icon.ico"
+      "icon": "resources/icons/windows/icon.ico",
+      "artifactName": "ReSharp3DS-Studio-windows-x64-setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -98,6 +103,7 @@
   "homepage": "https://github.com/saysaa/ReSharp3DS-Studio",
   "author": {
     "name": "Saysaa",
-    "email": "no-reply@resharp.com"
-  }
+    "email": "noreply@resharp3ds.local"
+  },
+  "license": "GPL-3.0-only"
 }

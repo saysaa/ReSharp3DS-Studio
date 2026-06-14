@@ -13,9 +13,10 @@
     "start:electron": "npm --prefix electron-app start",
     "watch:browser": "lerna run --parallel watch --ignore electron-app",
     "watch:electron": "lerna run --parallel watch --ignore browser-app",
-    "dist:dir": "yarn build:electron && electron-builder --projectDir electron-app --dir",
-    "dist:linux": "yarn build:electron && electron-builder --projectDir electron-app --linux --x64",
-    "dist:win": "yarn build:electron && electron-builder --projectDir electron-app --win --x64"
+    "dist:dir": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --dir",
+    "dist:linux": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --linux deb --x64",
+    "dist:win": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --win nsis --x64",
+    "clean:dist": "node -e \"require('fs').rmSync('electron-app/dist', { recursive: true, force: true })\""
   },
   "devDependencies": {
     "electron-builder": "26.0.12",
@@ -25,5 +26,6 @@
     "resharp3ds-studio",
     "browser-app",
     "electron-app"
-  ]
+  ],
+  "license": "GPL-3.0-only"
 }
