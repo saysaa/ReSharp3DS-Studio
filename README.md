@@ -1,5 +1,4 @@
-# resharp3ds-studio
-The example of how to build the Theia-based applications with the resharp3ds-studio.
+# ReSharp3DS Studio
 
 ## Getting started
 
