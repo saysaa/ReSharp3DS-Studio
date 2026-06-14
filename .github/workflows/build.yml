@@ -40,15 +40,39 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ReSharp3DS-Studio-linux
-          path: electron-app/dist/ReSharp3DS-Studio-linux-x64.deb
+          path: |
+            electron-app/dist/*.deb
 
   build-windows:
     name: Build Windows
-    runs-on: windows-latest
+    runs-on: windows-2022
+
+    env:
+      GYP_MSVS_VERSION: 2022
+      npm_config_msvs_version: 2022
+
+    steps:
+      - name: Checkout
+        uses: ReSharp3DS-Studio-linux
+          path: |
+            electron-app/dist/*.deb
+
+  build-windows:
+    name: Build Windows
+    runs-on: windows-2022
+
+    env:
+      GYP_MSVS_VERSION: 2022
+      npm_config_msvs_version: 2022
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -70,4 +94,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ReSharp3DS-Studio-windows
-          path: electron-app/dist/ReSharp3DS-Studio-windows-x64-setup.exe
+          path: |
+            electron-app/dist/*.exe
