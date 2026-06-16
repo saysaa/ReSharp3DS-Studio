@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "resharp3ds-studio-electron",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "lib/backend/electron-main.js",
   "dependencies": {
     "@theia/core": "1.72.3",
@@ -39,14 +39,14 @@
     "electron": {
       "windowOptions": {
         "title": "ReSharp3DS Studio",
-        "icon": "resources/resharp3ds.png"
+        "icon": "resources/icons/linux/512x512.png"
       }
     }
   },
-  "productName": "ReSharp3DS Studio",
+  "productName": "ReSharp3DS-Studio",
   "build": {
     "appId": "dev.saysaa.resharp3ds.studio",
-    "productName": "ReSharp3DS Studio",
+    "productName": "ReSharp3DS-Studio",
     "asar": false,
     "directories": {
       "output": "dist"
@@ -62,12 +62,15 @@
     "extraResources": [
       {
         "from": "../resharp3ds-studio/compiler",
-        "to": "resharp3ds-studio/compiler"
+        "to": "resharp3ds-studio/compiler",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "linux": {
       "target": [
-        "deb"
+        "rpm"
       ],
       "category": "Development",
       "executableName": "resharp3ds-studio",

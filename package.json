@@ -14,7 +14,7 @@
     "watch:browser": "lerna run --parallel watch --ignore electron-app",
     "watch:electron": "lerna run --parallel watch --ignore browser-app",
     "dist:dir": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --dir",
-    "dist:linux": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --linux deb --x64",
+    "dist:linux": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --linux rpm --x64",
     "dist:win": "yarn clean:dist && yarn build:electron && electron-builder --projectDir electron-app --win nsis --x64",
     "clean:dist": "node -e \"require('fs').rmSync('electron-app/dist', { recursive: true, force: true })\""
   },
